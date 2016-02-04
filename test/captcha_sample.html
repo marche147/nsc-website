@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Captcha test</title>
+	<meta charset="utf-8" />
+	<meta name="author" content="" />
+</head>
+<body>
+	<form method="post" action="check.php">
+		<img  title="µã»÷Ë¢ÐÂ" src="./captcha.php" align="absbottom" onclick="this.src='captcha.php?'+Math.random();"></img>
+		<input type="text" name="verify_code" />
+		<input type="submit" name="Submit" />
+	</form>
+	
+</body>
+</html>
