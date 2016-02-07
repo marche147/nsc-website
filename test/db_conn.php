@@ -1,6 +1,6 @@
 <?php
 require("common.php");
-
+//enable_error_reporting();
 /*
  * User table :
 +--------+-------------+------+-----+---------+----------------+
@@ -98,5 +98,58 @@ function db_insertuser($uname,$passwd,$priv)
 	$stmt->close();
 	db_closeconn($conn);
 	return 1;
+}
+
+function db_queryuserbyname($uname)
+{
+	$sql = "select uid,passwd,salt,priv,score from users where uname = ?";
+	$conn = db_startconn();
+	$uid = 0;
+	$passwd = "";
+	$salt = "";
+	$priv = 0;
+	$score = 0.0;
+	$res = array();
+	if(!$conn)
+	{
+		// error handling
+		return;
+	}
+	if(!($stmt = $conn->prepare($sql)))
+	{
+		// error handling
+		db_closeconn($conn);
+		return;
+	}
+	if(!($stmt->bind_param("s",$uname)))
+	{
+		// error handling
+		goto cleanup;
+	}
+	if(!($stmt->bind_result($uid,$passwd,$salt,$priv,$score)))
+	{
+		// error handling
+		goto cleanup;
+	}
+	if(!($stmt->execute()))
+	{
+		// error handling
+		goto cleanup;
+	}
+	if(!($stmt->fetch()))
+	{
+		goto cleanup;
+	}
+	$res["uid"] = $uid;
+	$res["uname"] = $uname;
+	$res["passwd"] = $passwd;
+	$res["salt"] = $salt;
+	$res["priv"] = $priv;
+	$res["score"] = $score;
+	$stmt->free_result();
+cleanup:
+	$stmt->close();
+	db_closeconn($conn);
+	return $res;
 }
 ?>
