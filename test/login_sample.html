@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login</title>
+<meta charset="utf-8" />
+</head>
+<body>
+<form method="post" action="login.php">
+	Username : <input type="text" name="uname" /><br />
+	Password : <input type="password" name="passwd" /><br />
+	Captcha : <input type="text" name="captcha" />
+	<img src="captcha.php" align="absbottom" onclick="this.src='captcha.php?'+Math.random();"></img><br />
+	<input type="submit" name="Submit" text="Login" />
+</form>
+</body>
+</html>
