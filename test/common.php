@@ -1,5 +1,5 @@
 <?php
-$nsc_config_path = "/var/www/nsc.conf";  //config file path
+//$nsc_config_path = "./config/";  //config file path
 $nsc_salt_charset = "abcdefghijklmnopqrstuvwxyz0123456789~!@#$%^&*()_+-=";
 $nsc_salt_len = 6;
 

@@ -17,7 +17,7 @@ if(strtoupper($captcha) != strtoupper($_SESSION["code"]))
 	echo "<script language=\"javascript\">alert(\"Captcha wrong!\");self.location=\"register_sample.html\"</script>";
 	exit();
 }
-$res = db_insertuser($uname,$passwd,0);
+$res = db_insert_user($uname,$passwd,0);
 if($res > 0)
 {
 	echo "<script language=\"javascript\">alert(\"Register success!\");self.location=\"register_sample.html\"</script>";

@@ -1,0 +1,32 @@
+user table:
+uid  int(10)  (admin uid 0)
+uname  varchar(40)
+passwd varchar(40)
+salt   varchar(40)
+level   int(10)
+email  varchar(40)   
+score  int(10)
+last_login_ip varchar(20)
+new_message int(10) (the mid of new message)
+
+
+message table:
+mid int(10)  
+from_uid  int(10)  (公告从uid 0 发到uid 0）
+to_uid   int(10)
+message_time timestamp  (2016_2_10)
+content   varchar(3000)
+
+download table:
+did int(10)
+download_content varchar(3000)
+address  varchar(40)
+frequency int(10)  (download times)
+
+galary table:(宣传展示)
+aid int(10)
+article varchar(3000)
+article_time timestamp 
+writer varchar(40) 
+
+
