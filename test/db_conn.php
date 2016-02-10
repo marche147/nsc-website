@@ -1,5 +1,7 @@
 <?php
 require("common.php");
+require("./config/db.conf.php");
+echo $db_host;
 //enable_error_reporting();
 /*
  * User table :
@@ -17,11 +19,11 @@ require("common.php");
 
 function db_startconn()
 {
-	$arr = parse_ini_file($GLOBALS["nsc_config_path"],false);
+	/*$arr = parse_ini_file($GLOBALS["nsc_config_path"]."db.conf.php",false);
 	$db_host = "";
 	$db_user = "";
 	$db_passwd = "";
-	$db_port = 3306;
+	$db_port = "";
 	$db_database = "";
 	foreach($arr as $key => $value)
 	{
@@ -35,9 +37,11 @@ function db_startconn()
 			$db_port = (int)$value;
 		else if($key == "db_database")
 			$db_database = $value;
+		//$$key=$value;
 	}
+	*/
 	//echo "Connection = ".$db_user."@".$db_host." with db = ".$db_database;
-	$conn = new mysqli($db_host, $db_user, $db_passwd, $db_database, $db_port);
+	$conn = new mysqli($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_passwd"], $GLOBALS["db_database"], $GLOBALS["db_port"]);
 	if($conn->connect_errno) {
 		// error handling
 		if(isset($GLOBALS["nsc_err_dbg"])&&$GLOBALS["nsc_err_dbg"] == true)
@@ -52,16 +56,50 @@ function db_startconn()
 	return $conn;
 }
 
-function db_closeconn($conn)
+function db_close_conn($conn)
 {
 	$conn->close();
 	return;
 }
 
-function db_insertuser($uname,$passwd,$priv)
-{
-	$sql = "insert into users (uname,passwd,salt,priv,score) values (?,?,?,?,?)";
-	$score = 0.0;
+function execute_sql($query,$is_output){   //用于测试和内部管理功能，不需要函数过滤
+	$conn = db_startconn();
+	if(!$conn)
+	{
+		// error handling
+		return -1;
+	}
+	$result=$conn->query($query);
+	if($is_output){
+			if(isset($result)){
+				echo "success!<br>";
+				$row_b=array();
+    			while($row=@mysql_fetch_row($result)){
+					$count=count($row);
+					for($i=0;$i<($count);$i++){
+						echo $row[$i];
+						echo " ";			
+					}
+				echo "<br>";
+				}
+			}else
+			{
+			echo "failed!<br>";
+			}
+	}
+	$conn->close();
+	return $row;
+}
+
+
+
+function db_insert_user($uname,$passwd,$priv)
+{	
+	//get current user num
+	$result=execute_sql("select user_number from db_status;",1);
+	echo $result;
+	$sql = "insert into users (uname,passwd,salt,priv,score) values (?,?,?,?,?);";	
+	$score = 0;
 	$salt = "";
 	$enc_passwd = "";
 	$conn = db_startconn();
@@ -77,7 +115,7 @@ function db_insertuser($uname,$passwd,$priv)
 	if(!($stmt = $conn->prepare($sql)))
 	{
 		// error handling
-		db_closeconn($conn);
+		db_close_conn($conn);
 		return -2;
 	}
 	// bind parameters
@@ -100,7 +138,7 @@ function db_insertuser($uname,$passwd,$priv)
 	return 1;
 }
 
-function db_queryuserbyname($uname)
+function db_query_user_by_name($uname)
 {
 	$sql = "select uid,passwd,salt,priv,score from users where uname = ?";
 	$conn = db_startconn();
