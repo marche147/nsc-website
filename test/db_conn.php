@@ -1,7 +1,7 @@
 <?php
 require("common.php");
+require("email.php");
 require("./config/db.conf.php");
-echo $db_host;
 //enable_error_reporting();
 /*
  * User table :
@@ -62,7 +62,7 @@ function db_close_conn($conn)
 	return;
 }
 
-function execute_sql($query,$is_output){   //用于测试和内部管理功能，不需要函数过滤
+function execute_sql($query,$is_output){   //用于测试和内部管理功能，不需要过滤
 	$conn = db_startconn();
 	if(!$conn)
 	{
@@ -70,11 +70,14 @@ function execute_sql($query,$is_output){   //用于测试和内部管理功能�
 		return -1;
 	}
 	$result=$conn->query($query);
+	$row=array();
+	if(is_object($result)){
+		$row=$result->fetch_row();
+	}
 	if($is_output){
 			if(isset($result)){
 				echo "success!<br>";
-				$row_b=array();
-    			while($row=@mysql_fetch_row($result)){
+    			while($row){
 					$count=count($row);
 					for($i=0;$i<($count);$i++){
 						echo $row[$i];
@@ -92,14 +95,13 @@ function execute_sql($query,$is_output){   //用于测试和内部管理功能�
 }
 
 
-
-function db_insert_user($uname,$passwd,$priv)
+//过滤函数：1.对于数字型参数过滤；2.对于字母数字性参数过滤；3.含有少量特殊符号的过滤
+function db_insert_user($uname,$passwd,$email,$level)
 {	
 	//get current user num
-	$result=execute_sql("select user_number from db_status;",1);
-	echo $result;
-	$sql = "insert into users (uname,passwd,salt,priv,score) values (?,?,?,?,?);";	
-	$score = 0;
+	$uid=execute_sql("select user_number from db_status;",0)[0];
+	//$email="haozi@nsc.com";//test
+	$sql = "insert into user (uid,uname,passwd,salt,level,email,score,is_verified,verified_code) values (?,?,?,?,?,?,0,0,?);";	
 	$salt = "";
 	$enc_passwd = "";
 	$conn = db_startconn();
@@ -111,6 +113,7 @@ function db_insert_user($uname,$passwd,$priv)
 	// make passwd
 	$salt = generate_salt($GLOBALS["nsc_salt_len"]);
 	$enc_passwd = passwd_encrypt($passwd,$salt);
+	$verified_code=passwd_encrypt(mt_rand(0,99999),$salt);
 	// using prepared statement to prevent sql injection
 	if(!($stmt = $conn->prepare($sql)))
 	{
@@ -119,12 +122,12 @@ function db_insert_user($uname,$passwd,$priv)
 		return -2;
 	}
 	// bind parameters
-	if(!($stmt->bind_param("sssid",$uname,$enc_passwd,$salt,$priv,$score)))
+	if(!($stmt->bind_param("isssiss",$uid,$uname,$enc_passwd,$salt,$level,$email,$verified_code)))
 	{
 		// error handling
 		db_closeconn($conn);
 		$stmt->close();
-		return -2;
+		return -4;
 	}
 	if(!($stmt->execute()))
 	{
@@ -133,9 +136,16 @@ function db_insert_user($uname,$passwd,$priv)
 		$stmt->close();
 		return -3;
 	}
+	//uid+1，并存入数据库
+	$uid+=1;
+	execute_sql("update db_status set user_number=".$uid.";",0);
+	//发送邮箱验证码
+	$content="hello!".$uname.":your verified code is:".$verified_code.",please verify your email soon.";
+	send_verified_code($email,$content);
 	$stmt->close();
-	db_closeconn($conn);
+	db_close_conn($conn);
 	return 1;
+
 }
 
 function db_query_user_by_name($uname)

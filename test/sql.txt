@@ -8,6 +8,8 @@ email  varchar(40)
 score  int(10)
 last_login_ip varchar(20)
 new_message int(10) (the mid of new message)
+is_verified bool 
+verified_code  varchar(40) //新增的邮箱验证
 
 
 message table:
