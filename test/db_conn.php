@@ -153,31 +153,32 @@ function db_insert_user($uname,$passwd,$email,$level)
 
 function db_query_user_by_name($uname)
 {
-	$sql = "select uid,passwd,email,salt,priv,score from user where uname = ?";
+	$sql = "select uid,passwd,email,salt,level,score from user where uname = ?";
 	$conn = db_startconn();
 	$uid = 0;
+	$email="";
 	$passwd = "";
 	$salt = "";
-	$priv = 0;
+	$level = 0;
 	$score = 0.0;
 	$res = array();
 	if(!$conn)
 	{
 		// error handling
-		return;
+		return -1;
 	}
 	if(!($stmt = $conn->prepare($sql)))
 	{
 		// error handling
 		db_close_conn($conn);
-		return;
+		return -2;
 	}
 	if(!($stmt->bind_param("s",$uname)))
 	{
 		// error handling
 		goto cleanup;
 	}
-	if(!($stmt->bind_result($uid,$passwd,$email,$salt,$priv,$score)))
+	if(!($stmt->bind_result($uid,$passwd,$email,$salt,$level,$score)))
 	{
 		// error handling
 		goto cleanup;
@@ -196,7 +197,7 @@ function db_query_user_by_name($uname)
 	$res["passwd"] = $passwd;
 	$res["email"]=$email;
 	$res["salt"] = $salt;
-	$res["priv"] = $priv;
+	$res["level"] = $level;
 	$res["score"] = $score;
 	$stmt->free_result();
 cleanup:
@@ -208,12 +209,12 @@ cleanup:
 
 function db_query_user_by_email($email)
 {
-	$sql = "select uid,uname,passwd,salt,priv,score from user where email = ?";
+	$sql = "select uid,uname,passwd,salt,level,score from user where email = ?";
 	$conn = db_startconn();
 	$uid = 0;
 	$passwd = "";
 	$salt = "";
-	$priv = 0;
+	$level = 0;
 	$score = 0.0;
 	$res = array();
 	if(!$conn)
@@ -232,7 +233,7 @@ function db_query_user_by_email($email)
 		// error handling
 		goto cleanup;
 	}
-	if(!($stmt->bind_result($uid,$uname,$passwd,$salt,$priv,$score)))
+	if(!($stmt->bind_result($uid,$uname,$passwd,$salt,$level,$score)))
 	{
 		// error handling
 		goto cleanup;
@@ -251,7 +252,7 @@ function db_query_user_by_email($email)
 	$res["passwd"] = $passwd;
 	$res["email"]=$email;
 	$res["salt"] = $salt;
-	$res["priv"] = $priv;
+	$res["level"] = $level;
 	$res["score"] = $score;
 	$stmt->free_result();
 	cleanup:
