@@ -5,16 +5,19 @@ require("./config/db.conf.php");
 //enable_error_reporting();
 /*
  * User table :
-+--------+-------------+------+-----+---------+----------------+
-| Field  | Type        | Null | Key | Default | Extra          |
-+--------+-------------+------+-----+---------+----------------+
-| uid    | int(4)      | NO   | PRI | NULL    | auto_increment |
-| uname  | varchar(40) | YES  | UNI | NULL    |                |
-| passwd | varchar(40) | YES  |     | NULL    |                |
-| salt   | varchar(40) | YES  |     | NULL    |                |
-| priv   | int(10)     | YES  |     | NULL    |                |
-| score  | float       | YES  |     | NULL    |                |
-+--------+-------------+------+-----+---------+----------------+
++---------------+-------------+------+-----+---------+---------------+
+| Field         | Type        | Null | Key | Default |   Extra       |
++---------------+-------------+------+-----+---------+---------------+
+| uid           | int(10)     | NO   | PRI | NULL    | auto_increment|
+| uname         | varchar(40) | NO   | UNI | NULL    |               |
+| passwd        | varchar(40) | NO   |     | NULL    |               |
+| salt          | varchar(40) | NO   |     | NULL    |               |
+| level         | int(10)     | NO   |     | 0       |               |
+| email         | varchar(40) | NO   | UNI | NULL    |               |
+| score         | int(10)     | NO   |     | 0       |               |
+| new_message   | int(10)     | NO   |     | NULL    |               |
+| last_login_ip | varchar(20) | NO   |     | NULL    |               |
++---------------+-------------+------+-----+---------+---------------+
  */
 
 function db_startconn()
@@ -46,7 +49,7 @@ function db_startconn()
 		// error handling
 		if(isset($GLOBALS["nsc_err_dbg"])&&$GLOBALS["nsc_err_dbg"] == true)
 		{
-			echo "Cannot connect to ".$db_user."@".$db_host;
+			echo "Cannot connect to ".$GLOBALS["db_user"]."@".$GLOBALS["db_host"];
 		}
 		return;
 	}
@@ -125,14 +128,14 @@ function db_insert_user($uname,$passwd,$email,$level)
 	if(!($stmt->bind_param("isssiss",$uid,$uname,$enc_passwd,$salt,$level,$email,$verified_code)))
 	{
 		// error handling
-		db_closeconn($conn);
+		db_close_conn($conn);
 		$stmt->close();
 		return -4;
 	}
 	if(!($stmt->execute()))
 	{
 		// error handling
-		db_closeconn($conn);
+		db_close_conn($conn);
 		$stmt->close();
 		return -3;
 	}
@@ -150,7 +153,7 @@ function db_insert_user($uname,$passwd,$email,$level)
 
 function db_query_user_by_name($uname)
 {
-	$sql = "select uid,passwd,salt,priv,score from users where uname = ?";
+	$sql = "select uid,passwd,email,salt,priv,score from user where uname = ?";
 	$conn = db_startconn();
 	$uid = 0;
 	$passwd = "";
@@ -166,7 +169,7 @@ function db_query_user_by_name($uname)
 	if(!($stmt = $conn->prepare($sql)))
 	{
 		// error handling
-		db_closeconn($conn);
+		db_close_conn($conn);
 		return;
 	}
 	if(!($stmt->bind_param("s",$uname)))
@@ -174,7 +177,7 @@ function db_query_user_by_name($uname)
 		// error handling
 		goto cleanup;
 	}
-	if(!($stmt->bind_result($uid,$passwd,$salt,$priv,$score)))
+	if(!($stmt->bind_result($uid,$passwd,$email,$salt,$priv,$score)))
 	{
 		// error handling
 		goto cleanup;
@@ -191,13 +194,69 @@ function db_query_user_by_name($uname)
 	$res["uid"] = $uid;
 	$res["uname"] = $uname;
 	$res["passwd"] = $passwd;
+	$res["email"]=$email;
 	$res["salt"] = $salt;
 	$res["priv"] = $priv;
 	$res["score"] = $score;
 	$stmt->free_result();
 cleanup:
 	$stmt->close();
-	db_closeconn($conn);
+	db_close_conn($conn);
+	return $res;
+}
+
+
+function db_query_user_by_email($email)
+{
+	$sql = "select uid,uname,passwd,salt,priv,score from user where email = ?";
+	$conn = db_startconn();
+	$uid = 0;
+	$passwd = "";
+	$salt = "";
+	$priv = 0;
+	$score = 0.0;
+	$res = array();
+	if(!$conn)
+	{
+		// error handling
+		return;
+	}
+	if(!($stmt = $conn->prepare($sql)))
+	{
+		// error handling
+		db_close_conn($conn);
+		return;
+	}
+	if(!($stmt->bind_param("s",$email)))
+	{
+		// error handling
+		goto cleanup;
+	}
+	if(!($stmt->bind_result($uid,$uname,$passwd,$salt,$priv,$score)))
+	{
+		// error handling
+		goto cleanup;
+	}
+	if(!($stmt->execute()))
+	{
+		// error handling
+		goto cleanup;
+	}
+	if(!($stmt->fetch()))
+	{
+		goto cleanup;
+	}
+	$res["uid"] = $uid;
+	$res["uname"]=$uname;
+	$res["passwd"] = $passwd;
+	$res["email"]=$email;
+	$res["salt"] = $salt;
+	$res["priv"] = $priv;
+	$res["score"] = $score;
+	$stmt->free_result();
+	cleanup:
+	$stmt->close();
+	db_close_conn($conn);
 	return $res;
 }
 ?>
