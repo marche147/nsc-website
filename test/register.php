@@ -4,7 +4,7 @@
 require("db_conn.php");
 session_start();
 $email_pattern = "/([a-z0-9]*[-_.]?[a-z0-9]+)*@([a-z0-9]*[-_]?[a-z0-9]+)+[.][a-z]{2,3}([.][a-z]{2})?/i";   //邮箱正则表达式
-$uname_pattern="/^[a-z0-9_\x{4e00}-\x{9fa5}]{6,16}$/ui";                                     //用户名正则表达式
+$uname_pattern="/^[a-z0-9_\x{4e00}-\x{9fa5}]{1,16}$/ui";                                     //用户名正则表达式
 if(!isset($_POST["uname"])||!isset($_POST["passwd"])||!isset($_POST["email"]))
 {
 	// redirect
@@ -27,7 +27,7 @@ if(strtoupper($captcha) != strtoupper($_SESSION["code"]))
 }
 
 //邮箱规则判断
-else if (!preg_match_all( $email_pattern, $email ) )
+else if (!preg_match_all( $email_pattern, strtolower($email) ) )
 {
 	echo "<script language=\"javascript\">alert(\"Your email is illegal!\");history.back();</script>";
 	exit();
@@ -35,7 +35,7 @@ else if (!preg_match_all( $email_pattern, $email ) )
 
 //用户名规则判断
 //待测$text必须是utf-8的格式！用户名只能包括中文，英文字母，数字，下划线 ( _ ) 不能含空格6-16位
-else if(!preg_match($uname_pattern,$uname))
+else if(!preg_match($uname_pattern,strtolower($uname)))
 {
 	echo "<script language=\"javascript\">alert(\"Your name is illegal!\");history.back();</script>";
 	exit();
