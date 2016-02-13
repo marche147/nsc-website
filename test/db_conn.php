@@ -161,7 +161,11 @@ function db_query_user_by_name($uname)
 	$salt = "";
 	$level = 0;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	$score = 0.0;
+=======
+	$score = 0.0;
+>>>>>>> f35c0e806ba12e1f6815fddd8e005e5c42b12d6b
 =======
 	$score = 0;
 >>>>>>> f35c0e806ba12e1f6815fddd8e005e5c42b12d6b
@@ -214,7 +218,11 @@ cleanup:
 function db_query_user_by_email($email)
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
 	$sql = "select uid,uname,passwd,salt,level,score from user where email = ?";
+=======
+	$sql = "select uid,uname,passwd,salt,level,score,verified_code from user where email = ?";
+>>>>>>> f35c0e806ba12e1f6815fddd8e005e5c42b12d6b
 =======
 	$sql = "select uid,uname,passwd,salt,level,score,verified_code from user where email = ?";
 >>>>>>> f35c0e806ba12e1f6815fddd8e005e5c42b12d6b
@@ -225,7 +233,11 @@ function db_query_user_by_email($email)
 	$salt = "";
 	$level = 0;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	$score = 0.0;
+=======
+	$score = 0;
+>>>>>>> f35c0e806ba12e1f6815fddd8e005e5c42b12d6b
 =======
 	$score = 0;
 >>>>>>> f35c0e806ba12e1f6815fddd8e005e5c42b12d6b
@@ -247,7 +259,11 @@ function db_query_user_by_email($email)
 		goto cleanup;
 	}
 <<<<<<< HEAD
+<<<<<<< HEAD
 	if(!($stmt->bind_result($uid,$uname,$passwd,$salt,$level,$score)))
+=======
+	if(!($stmt->bind_result($uid,$uname,$passwd,$salt,$level,$score,$verified_code)))
+>>>>>>> f35c0e806ba12e1f6815fddd8e005e5c42b12d6b
 =======
 	if(!($stmt->bind_result($uid,$uname,$passwd,$salt,$level,$score,$verified_code)))
 >>>>>>> f35c0e806ba12e1f6815fddd8e005e5c42b12d6b
