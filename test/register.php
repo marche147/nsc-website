@@ -57,7 +57,7 @@ else if(db_query_user_by_email($email))
 else
 {
 	$res = db_insert_user($uname,$passwd,$email,0);
-	echo $res;
+	//echo $res;
 	if($res > 0)
 	{
 		echo "<script language=\"javascript\">alert(\"Register success!\");</script>";

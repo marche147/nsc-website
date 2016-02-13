@@ -143,7 +143,7 @@ function db_insert_user($uname,$passwd,$email,$level)
 	$uid+=1;
 	execute_sql("update db_status set user_number=".$uid.";",0);
 	//发送邮箱验证码
-	$content="hello!".$uname.":your verified code is:".$verified_code.",please verify your email soon.";
+	$content="hello! ".$uname.":<br>your verified code is:<br> ".$verified_code."<br>please <a href=http://127.0.0.1/nsc-website/test/verify_email.php?code=".$verified_code."&email=".$email.">verify your email</a> soon.";
 	send_verified_code($email,$content);
 	$stmt->close();
 	db_close_conn($conn);
@@ -208,13 +208,14 @@ cleanup:
 
 function db_query_user_by_email($email)
 {
-	$sql = "select uid,uname,passwd,salt,level,score from user where email = ?";
+	$sql = "select uid,uname,passwd,salt,level,score,verified_code from user where email = ?";
 	$conn = db_startconn();
 	$uid = 0;
+	$verified_code="";
 	$passwd = "";
 	$salt = "";
 	$level = 0;
-	$score = 0.0;
+	$score = 0;
 	$res = array();
 	if(!$conn)
 	{
@@ -232,7 +233,7 @@ function db_query_user_by_email($email)
 		// error handling
 		goto cleanup;
 	}
-	if(!($stmt->bind_result($uid,$uname,$passwd,$salt,$level,$score)))
+	if(!($stmt->bind_result($uid,$uname,$passwd,$salt,$level,$score,$verified_code)))
 	{
 		// error handling
 		goto cleanup;
@@ -253,6 +254,7 @@ function db_query_user_by_email($email)
 	$res["salt"] = $salt;
 	$res["level"] = $level;
 	$res["score"] = $score;
+	$res["verified_code"] = $verified_code;
 	$stmt->free_result();
 	cleanup:
 	$stmt->close();
