@@ -1,0 +1,239 @@
+body {
+    background: #000;
+    height: 620px;
+}
+
+@font-face {
+    font-family: 'Myriad Set Pro';
+    font-style: normal;
+    src:url("../fonts/myriad-set-pro_ultralight.woff") format("woff"), url("../../fonts/myriad-set-pro_ultralight.ttf") format("truetype");
+    *src:url('');
+}
+
+#topside {
+    width: 100%;
+    height: 53px;
+    background:white;
+
+    border-bottom: 3px solid #666;
+}
+
+#left-topic {
+    padding: 80px 0 0 0; 
+    
+}
+
+.left-topics {
+    font-size: 70px;
+    color: white;
+    text-shadow: 0px 1px 3px #222 ;
+    text-align: left;
+    letter-spacing: 2px;
+    font-family: Arial,Verdana,Sans-serif;
+    font-weight: 100;
+}
+
+#left-word {
+    padding-top: 40px;
+}
+
+.left-words {
+    font-size: 20px;
+    padding-top: 7px; 
+    color: #666;
+    letter-spacing: 1px;
+    text-shadow: 0px 1px 3px #222 ;
+    font-weight: 10;
+    font-family: "Helvetica Neue", "Hiragino Sans GB", "Segoe UI", "Microsoft Yahei", "微软雅黑", Tahoma, Arial, STHeiti, sans-serif;
+
+}
+
+.login-wrapper {
+    width: 340px;
+    margin: 60px auto;
+}
+
+.login_topic {
+    width: 330px;
+    height: 100px;
+    margin: 0 auto;
+}
+
+.login_topic img {
+    float: left;
+}
+
+.login_topic div {
+    padding-top: 30px;
+    padding-left: 30px;
+    float: left;
+    color: #fff;
+    font-size: 50px;
+    font-family: 'Myriad Set Pro';
+    font-weight: 700;
+    letter-spacing: 5px;
+}
+
+#login_form {
+    display: block;
+    z-index: 100;
+}
+
+.loginputs {
+    padding: 10px 10px 10px 10px;
+    margin-top: 10px;
+    width: 340px;
+    font-size: 20px;
+    height: 44px;
+    border: 1px solid white;
+    transition:border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    font-family: 'Myriad Set Pro';
+    font-weight: 700;
+    z-index: 100;
+}
+
+.loginputs:focus{
+    border-color:white;
+    outline:0;
+    -webkit-box-shadow:inset 0 1px 1px rgb(255,255,255),0 0 30px rgb(255,255,255);
+    box-shadow:inset 0 1px 1px rgb(255,255,255),0 0  30px rgb(255,255,235);
+}
+
+.logins {
+    font-size: 18px;
+    color: #fff;
+    width: 340px;
+    height: 44px;
+    letter-spacing: 1px;
+    font-weight: 100;
+    margin-top: 10px;
+    background: none;
+    text-shadow: 0px -1px 0px rgba(0,0,0,0.25);
+    border: 1px solid #777;
+    cursor: pointer;
+    font-family: 'Myriad Set Pro';
+    font-weight: 700;
+}
+
+.logins:first-child {
+    margin-right: 10px;
+}
+
+.logins:hover {
+    border: 1px solid white;
+    color: #fff;
+}
+
+.logins:focus {
+    border: 1px solid white;
+    color: #fff;
+}
+
+.topic {
+    font-family: 'Myriad Set Pro';
+    font-size: 25px;
+    color:white;
+    font-weight: 700;
+
+    height: 60px;
+    padding: 10px 0 30px 0;
+    letter-spacing: 1px;
+}
+
+.register_form {
+    width: 980px;
+}
+
+.register_label {
+    font-family: 'Myriad Set Pro';
+    font-weight: 700;
+    font-size: 20px;
+    color:white;
+    letter-spacing: 1px;
+}
+
+
+
+.register_inputs {
+    padding: 4.5px 10px 4.5px 10px;
+    margin-top: 3px;
+    width: 450px;
+    font-size: 20px;
+    height: 35px;
+    border: 1px solid white;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    font-family: Arial,Verdana,Sans-serif;
+    float: left;
+}
+
+.register_inputs:focus{
+    border-color:white;
+    outline:0;
+    -webkit-box-shadow:inset 0 1px 1px rgb(255,255,255),0 0 20px rgb(255,255,255);
+    box-shadow:inset 0 1px 1px rgb(255,255,255),0 0  20px rgb(255,255,235);
+}
+
+.form_error {
+    font-size: 15px;
+    font-family: Arial,Verdana,Sans-serif;
+    color: #555;
+    padding: 10px 0 0 23px;
+    float: left;
+    letter-spacing: 1px;
+}
+
+.register_submit {
+    font-family: 'Myriad Set Pro';
+    width: 220px;
+    height: 44px;
+    border: 1px solid #777;
+    background: #111; 
+    color: #777;
+    letter-spacing: 1px;
+    font-size: 16px;
+    font-weight: 700;
+    margin-top: 25px;
+    float: left;
+}
+
+.register_submit:hover {
+    border: 1px solid white;
+    color: #fff;
+}
+
+.register_submit:focus {
+    border: 1px solid white;
+    color: #fff;
+}
+
+#sign_up {
+    text-align: center;
+}
+
+.alert_box {
+    position: absolute;
+    display: none;
+    padding: 30px 30px 30px 30px;
+    color: #fff;
+    left: 50%;
+    margin-left: -350px;
+    margin-top: 100px;
+    width: 700px;
+    height: 300px;
+    background: #111;
+    z-index: 200;
+    border-radius: 5px;
+    opacity: .9;
+    font-size: 16px;
+    font-family: inherit;
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+#captcha {
+    float: left;
+    border-radius: 4px;
+    margin: 25px 0 0 30px;
+    height: 70px;
+}
+
