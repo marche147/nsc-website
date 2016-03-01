@@ -8,17 +8,23 @@ $uname_pattern="/^[a-z0-9_\x{4e00}-\x{9fa5}]{1,16}$/ui";                        
 if(!isset($_POST["uname"])||!isset($_POST["passwd"])||!isset($_POST["email"]))
 {
 	// redirect
-	header("Location:register_sample.html");
+	header("Location:register.html");
 	exit();
 }
 $uname = $_POST["uname"];
 $passwd = $_POST["passwd"];
+$verify_password=$_POST["passconf"];
 $email = $_POST["email"];
 $captcha = "";
 if(isset($_POST["captcha"]))
 	$captcha = $_POST["captcha"];
 
-
+//密码一致验证
+if($passwd!=$verify_password)
+{
+	echo "<script language=\"javascript\">alert(\"两次密码不一致!\");history.back();</script>";
+	exit();
+}
 //验证码判断
 if(strtoupper($captcha) != strtoupper($_SESSION["code"]))
 {
@@ -61,7 +67,7 @@ else
 	if($res > 0)
 	{
 		echo "<script language=\"javascript\">alert(\"Register success!\");</script>";
-		//这里要跳转到login页面
+		//这里要跳转到邮箱验证页面
 
 	}
 	else
