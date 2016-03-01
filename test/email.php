@@ -16,8 +16,7 @@ function send_verified_code($email,$content){
 	$state=mail_core($email,"verify your email",$content,"HTML");
 	//echo $state;
 	if($state){
-		echo '<body><form method="post" action="verify_email.php">user email :<input type="text" name="email" /><br>verify code :<input type="text" name="code" /><br><input type="submit" name="Submit" text="Register"/></form></body>';
-		/*成功发送邮件后调用相关函数*/
+		header("Location:verify_email_sample.html");
 	}
 }
 ?>
