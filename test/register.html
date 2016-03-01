@@ -1,0 +1,67 @@
+<html lang="en-US"><head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Register</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/login_user.css">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600' rel='stylesheet' type='text/css'>
+    <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="css/slimmenu.css" rel="stylesheet" media="screen">
+    <script src="js/jquery.min.js"></script>
+    <div class="content" id="home">
+        <div class="wrap">
+            <div class="header_style1">
+                <!-- start h_logo -->
+                <div class="logo">
+                    <h1><a href="index.html">Nsc</a></h1>
+                </div>
+                <!-- start h_menu -->
+                <div class="h_menu">
+                    <ul class="flexy-menu thick orange">
+                        <li> <a href="#" class="scroll">Announce</a></li>
+                        <li><a href="#" class="scroll">Register</a></li>
+                        <li><a href="#" class="scroll">Download</a> </li>
+                        <li><a href="#" class="scroll">Login</a></li>
+                        <li><a href="#contact" class="scroll">Contact</a></li>
+                    </ul>
+                </div>
+                <!-- end h_menu -->
+                <div class="clear"> </div>
+            </div>
+            <!---------menu-script------------->
+            <!-- start manu -->
+            <script type="text/javascript" src="js/flexy-menu.js"></script>
+            <link href="css/header_style1.css" rel="stylesheet" type="text/css" media="all" />
+            <script type="text/javascript">$(document).ready(function(){$(".flexy-menu").flexymenu({speed: 400,type: "horizontal",align: "right"});});</script>
+            <!---------end-script-menu------------->
+    <div class="page">
+        <div class="container" style="width:980px;padding-top:40px;">
+            <div class="col-md-12">
+                <div id="login" class="login-wrapper">
+                    <div class="login_topic">
+                        <img src="main.png" style="width:100px;">
+                        <div>NSC</div>
+                    </div>
+                
+                    <form action="register.php" method="post" accept-charset="utf-8" class="form-horizontal" id="login_form" name="login_form">
+              
+                        <input name="uname" id="uname" class="form-control loginputs" size="50" placeholder="Username" type="text">
+
+                        <input name="email" id="email" class="form-control loginputs" size="50" placeholder="Email Address" type="text">
+
+                        <input name="passwd" id="passwd" class="form-control loginputs" size="50" placeholder="Password" type="password">
+
+                        <input id="vpassword" class="form-control loginputs" name="passconf" size="50" placeholder="Verify Password" type="password">
+
+						<div style="height:54px;">
+                        <input style="width:40%;float:left" id="yanzheng" class="form-control loginputs" name="captcha" placeholder="captcha" type="text">
+                        <div class="loginputs" style="float:left;width:60%;padding:2px 15px;border: none"><img src="captcha.php" style="border:0;" alt=" " height="42" width="190" onclick="this.src='captcha.php?'+Math.random();"></div>
+                        </div>
+
+
+                        <input id="sign_up" class="form-control logins" value="SIGN UP" type="submit">
+                    </form>
+				</div>
+            </div>
+        </div>
+    </div>
