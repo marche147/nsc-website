@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/nsc-website.iml" filepath="$PROJECT_DIR$/nsc-website.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nsc网站项目.iml" filepath="$PROJECT_DIR$/nsc网站项目.iml" />
+    </modules>
+  </component>
+</project>
